@@ -1,0 +1,24 @@
+build:
+  gpu: true
+  python_version: "3.11"
+  system_packages:
+    - "libgl1-mesa-glx"
+    - "libglib2.0-0"
+  python_packages:
+    - "torch==2.2.2"
+    - "torchvision==0.17.2"
+    - "diffusers==0.27.2"
+    - "transformers==4.40.2"
+    - "accelerate==0.29.3"
+    - "safetensors"
+    - "scipy"
+    - "einops"
+    - "opencv-python-headless"
+    - "timm==0.9.16"
+    - "scikit-image"
+    - "huggingface_hub>=0.22"
+  run:
+    - "python -c \"from huggingface_hub import snapshot_download; snapshot_download('konnik/DiffusionPen', local_dir='/src/weights', allow_patterns=['style_models/*', 'diffusionpen_iam_model_path/*'])\""
+    - "python -c \"from huggingface_hub import snapshot_download; snapshot_download('stable-diffusion-v1-5/stable-diffusion-v1-5', local_dir='/src/weights/stable-diffusion-v1-5', allow_patterns=['vae/*', 'scheduler/*', 'model_index.json'])\""
+    - "python -c \"from transformers import CanineModel, CanineTokenizer; CanineTokenizer.from_pretrained('google/canine-c'); CanineModel.from_pretrained('google/canine-c')\""
+predict: "predict.py:Predictor"
